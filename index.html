@@ -15,7 +15,7 @@
 	<label><input type="radio" name="diff_type" value="diffPatch"> Patch</label>
 </div>
 
-<a href="https://github.com/kpdecker/jsdiff" class="source">github.com/kpdecker/jsdiff</a>
+<a href="https://github.com/codebymikey/jsdiff" class="source">github.com/codebymikey/jsdiff</a>
 
 <table>
 	<tr>
@@ -106,6 +106,7 @@ if ('oninput' in a) {
 function onDiffTypeChange(radio) {
 	window.diffType = radio.value;
 	document.title = "Diff " + radio.value.slice(4);
+	localStorage && localStorage.setItem('jsdiff.diffType', radio.value);
 }
 
 var radio = document.getElementsByName('diff_type');
@@ -113,6 +114,15 @@ for (var i = 0; i < radio.length; i++) {
 	radio[i].onchange = function(e) {
 		onDiffTypeChange(e.target);
 		changed();
+	}
+}
+
+var currentDiffType = localStorage && localStorage.getItem('jsdiff.diffType');
+if (currentDiffType) {
+	var radioEl = document.querySelector('#settings [name="diff_type"][value="' + currentDiffType + '"]');
+	if (radioEl) {
+		// Reuse the previous diff type.
+		radioEl.checked = true;
 	}
 }
 </script>
